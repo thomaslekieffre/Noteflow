@@ -2,11 +2,13 @@
   "name": "noteflow14",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently \"next dev\" \"cross-env NODE_NO_WARNINGS=1 node --loader ts-node/esm --experimental-specifier-resolution=node src/server/hocuspocus.ts\"",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "start:server": "cross-env NODE_NO_WARNINGS=1 node --loader ts-node/esm --experimental-specifier-resolution=node src/server/hocuspocus.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.0.2",
@@ -33,6 +35,8 @@
     "@vercel/postgres": "^0.10.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "concurrently": "^8.2.2",
+    "dotenv": "^16.4.5",
     "framer-motion": "^11.11.11",
     "lowlight": "^3.1.0",
     "lucide-react": "^0.454.0",
@@ -56,11 +60,13 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "cross-env": "^7.0.3",
     "eslint": "^8",
     "eslint-config-next": "14.2.16",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }

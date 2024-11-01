@@ -21,6 +21,7 @@ import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import { HocuspocusProvider } from "@hocuspocus/provider";
 import { MenuBar } from "./EditorMenuBar";
+import * as Y from "yjs";
 
 const lowlight = createLowlight(common);
 
@@ -52,8 +53,11 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
   noteId,
   user,
 }) => {
+  const ydoc = new Y.Doc();
+
   const provider = new HocuspocusProvider({
-    url: "ws://127.0.0.1:1234",
+    document: ydoc,
+    url: process.env.NEXT_PUBLIC_HOCUSPOCUS_URL || "ws://localhost:1234",
     name: noteId,
     token: JSON.stringify({
       userId: user?.id,
@@ -96,6 +100,14 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
   });
 
   useEffect(() => {
+    provider.on("status", ({ status }: { status: string }) => {
+      if (status === "connected") {
+        console.log("Connecté au serveur de collaboration");
+      } else if (status === "disconnected") {
+        console.error("Déconnecté du serveur de collaboration");
+      }
+    });
+
     return () => {
       provider.destroy();
     };
