@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Noteflow
 
-## Getting Started
+Application de **prise de notes collaborative** : éditeur riche, édition à plusieurs en temps réel, tags, filtres et partage par lien.
 
-First, run the development server:
+> ⚠️ **Projet archivé** — réalisé fin 2024 (assisté par IA), il n'est plus maintenu et la version en ligne n'est plus fonctionnelle. Le code reste disponible à titre de référence.
+
+![Next.js](https://img.shields.io/badge/Next.js-14-000000?logo=nextdotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Tiptap](https://img.shields.io/badge/Tiptap-2-6A00F5)
+![Yjs](https://img.shields.io/badge/Yjs-CRDT-30BCED)
+
+## Fonctionnalités
+
+- **Éditeur riche** basé sur Tiptap : titres, listes, blocs de code avec coloration syntaxique, images
+- **Collaboration en temps réel** avec curseurs partagés (Yjs + WebSocket)
+- **Invitations** de collaborateurs avec expiration automatique
+- **Tags et filtres** pour organiser ses notes
+- **Partage en lecture seule** via un lien public
+- **Export PDF** des notes (rendu avec Puppeteer)
+- **Tableau de bord** : notes récentes et statistiques
+- Thème clair / sombre
+
+## Stack
+
+- **Next.js 14** (App Router) + React 18 + TypeScript
+- **Tiptap** + **Yjs** / y-prosemirror pour l'édition collaborative
+- **Socket.IO** pour le temps réel
+- **Clerk** pour l'authentification
+- **Vercel Postgres** pour les données
+- **Tailwind CSS** + shadcn/ui + Framer Motion
+
+## Lancer en local
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/thomaslekieffre/Noteflow.git
+cd Noteflow
+npm install
+npm run dev   # application Next.js
+npm run ws    # serveur WebSocket de collaboration
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+L'application nécessite un projet Clerk et une base Postgres, à renseigner dans un fichier `.env.local`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/
+│   ├── (authenticated)/   # tableau de bord et éditeur de notes
+│   ├── api/               # notes, tags, collaboration, partage, export, upload
+│   └── shared/            # page publique d'une note partagée
+├── components/            # éditeur, navigation, tableau de bord, UI
+├── lib/                   # authentification, base de données, constantes
+└── server/                # serveur WebSocket
+```
